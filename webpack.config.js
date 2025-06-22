@@ -8,7 +8,7 @@ const devMode = process.env.NODE_ENV !== 'production';
 const analyzeBundle = process.env.ANALYZE_BUNDLE;
 // console.log(`Starting Webpack (devmode: ${devMode})`);
 
-const UglifyEsPlugin = require('uglify-es-webpack-plugin');
+//const UglifyEsPlugin = require('uglify-es-webpack-plugin');
 
 let devtool;
 if (devMode) {
