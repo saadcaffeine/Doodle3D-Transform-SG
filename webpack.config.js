@@ -10,7 +10,7 @@ const analyzeBundle = process.env.ANALYZE_BUNDLE;
 
 let devtool;
 if (devMode) {
-  devtool = 'eval-source-map';
+  //devtool = 'eval-source-map';
 } else {
   devtool = 'nosources-source-map';
 }
@@ -83,14 +83,14 @@ if (!devMode) {
     }
   };
 
-  imgLoader.push(imageCompressor);
+  //imgLoader.push(imageCompressor);
 }
 
 module.exports = {
   entry: {
     app: [
       ...(devMode ? [
-        'webpack-hot-middleware/client?reload=true', // hot middleware client
+        //'webpack-hot-middleware/client?reload=true', // hot middleware client
         'react-hot-loader/patch'
       ] : []),
       './src/js/preloader.js'
@@ -196,7 +196,16 @@ module.exports = {
       }, { // make THREE global available to three.js examples
         test: /three\/examples\/.+\.js/,
         use: 'imports-loader?THREE=three'
-      }
+      }, {
+  	test: /redux-undo\.umd\.js$/,
+  	use: 'script-loader'
+	},
+	{
+  test: /\.js$/,
+  exclude: /node_modules\/(?!nanoid)/,
+  use: [babelLoader]
+}
+
     ]
   },
   // Source map creation

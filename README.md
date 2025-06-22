@@ -22,3 +22,88 @@ npm run start
 ## Other important repositories
 * The core features of Doodle3D Transform: https://github.com/doodle3d/Doodle3D-Core
 * The GCODE slicer of Doodle3D Transform: https://github.com/doodle3d/Doodle3D-Slicer
+
+
+
+# 🎨 Doodle3D-Transform-SG
+
+This is a fork of [Doodle3D Transform](https://github.com/Doodle3D/Doodle3D-Transform) adapted for long-term reproducibility and compatibility with Node.js v14. It includes the full 3D sketch-to-print workflow built on WebGL, React, Redux, and Three.js.
+
+---
+
+## 🧰 Requirements
+
+- **Node.js 14.x** (recommended: `14.17.3`)
+- **npm 6.x or 7.x**
+- `nvm` (optional but recommended)
+
+---
+
+## 🚀 Setup Instructions
+
+### 1. Clone the repo
+
+```bash
+git clone https://github.com/saadcaffeine/Doodle3D-Transform-SG.git
+cd Doodle3D-Transform-SG
+```
+
+### 2. Use Node.js 14
+
+```bash
+nvm install 14
+nvm use 14
+```
+
+### 3. Install dependencies
+
+```bash
+rm -rf node_modules package-lock.json
+npm install
+```
+
+> ℹ️ All dependencies are **version-locked**, including GitHub packages like `@doodle3d/doodle3d-slicer`, to ensure stable builds.
+
+### 4. Start the development server
+
+```bash
+npm start
+```
+
+Visit [http://localhost:8080](http://localhost:8080)
+
+---
+
+## 🔐 GitHub Package Pinning
+
+These GitHub dependencies are pinned to specific commits for reproducibility:
+
+```json
+"@doodle3d/doodle3d-core": "Doodle3D/Doodle3D-Core#db748f7...",
+"@doodle3d/doodle3d-slicer": "Doodle3D/Doodle3D-Slicer#c0b4a07...",
+"redux-promise-action": "casperlamboo/redux-promise-action#b0dfad1..."
+```
+
+---
+
+## 🛠 Build for Production
+
+```bash
+npm run dist
+```
+
+Outputs are written to the `dist/` directory.
+
+---
+
+## ⚠️ Legacy Notes
+
+- This project uses **Webpack 3**, **React 16**, and **Redux 3/4**.
+- It’s designed for older browsers and codebases.
+- **Do not upgrade Webpack or Babel without a rewrite.**
+
+---
+
+## 📄 License
+
+MIT – forked and modified for compatibility by [@saadcaffeine](https://github.com/saadcaffeine).
