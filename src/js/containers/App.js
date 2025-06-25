@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as actions from 'src/js/actions/index.js';
-import App from '@doodle3d/doodle3d-core/lib/components/App';
+//import App from '@doodle3d/doodle3d-core/lib/components/App';
 import injectSheet from 'react-jss';
 import Popover from 'material-ui/Popover/Popover';
 import btnNewUrl from 'img/menu/btnNew.png';
@@ -23,6 +23,10 @@ import btnHelpSmallUrl from 'img/menu/btnHelpSmall.png';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import ArrowDropLeft from 'material-ui/svg-icons/navigation/chevron-left';
+
+const App = require('@doodle3d/doodle3d-core/lib/components/App');
+//const App = require('@doodle3d/doodle3d-core/lib/components/App').default;
+
 
 const button = {
   cursor: 'pointer',

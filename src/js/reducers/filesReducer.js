@@ -1,5 +1,8 @@
 import update from 'react-addons-update';
-import * as actions from 'src/js/actions/index.js';
+import * as actions from '../actions/index.js';
+import { LOAD_GALLERY } from 'src/js/actions/files.js';
+const galleryReducer = createPromiseReducer(LOAD_GALLERY);
+
 import * as sketcher from '@doodle3d/doodle3d-core/lib/actions';
 import { createPromiseReducer, initialState as initialPromiseState } from 'redux-promise-action';
 
@@ -12,7 +15,7 @@ export const initialState = {
   activeContextMenu: null,
 };
 
-const galleryReducer = createPromiseReducer(actions.files.LOAD_GALLERY);
+//const galleryReducer = createPromiseReducer(actions.files.LOAD_GALLERY);
 
 export default (state = initialState, action) => {
   switch (action.type) {

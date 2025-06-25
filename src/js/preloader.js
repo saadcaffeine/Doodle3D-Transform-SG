@@ -3,6 +3,11 @@ import Spinner from 'spin.js';
 const target = document.getElementById('app');
 const preloader = new Spinner().spin(target);
 
-import(/* webpackChunkName: "main" */ './index.js').then(() => {
+//import(/* webpackChunkName: "main" */ './index.js').then(() => {
+//  preloader.stop();
+//});
+
+require.ensure([], function(require) {
+  require('./index.js');
   preloader.stop();
-});
+}, 'main');

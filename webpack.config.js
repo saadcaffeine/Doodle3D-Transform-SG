@@ -1,4 +1,4 @@
-/* eslint no-console:  0, quote-props: 0*/
+/* eslint no-console: 0, quote-props: 0 */
 const path = require('path');
 const webpack = require('webpack');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
@@ -6,16 +6,8 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 
 const devMode = process.env.NODE_ENV !== 'production';
 const analyzeBundle = process.env.ANALYZE_BUNDLE;
-// console.log(`Starting Webpack (devmode: ${devMode})`);
 
-//const UglifyEsPlugin = require('uglify-es-webpack-plugin');
-
-let devtool;
-if (devMode) {
-  //devtool = 'eval-source-map';
-} else {
-  devtool = 'nosources-source-map';
-}
+const devtool = devMode ? 'eval-source-map' : false;
 
 const babelLoader = {
   loader: 'babel-loader',
@@ -27,25 +19,22 @@ const babelLoader = {
             ['last 1 Chrome versions', 'last 1 Firefox versions'] :
             ['last 2 versions', 'safari >= 7', 'not ie < 11']
         },
-        modules: false, // keeping the esm module syntax enables the minifier to go through the modules
+        modules: 'commonjs',
         loose: true,
-        debug: !devMode // log targets when creating dist
+        debug: !devMode
       }],
-      require('babel-preset-react'),
+      require('babel-preset-react')
     ],
     plugins: [
-      require('babel-plugin-transform-object-rest-spread'), // transpile spread operator for objects
-      require('babel-plugin-transform-class-properties'), // transpile class properties
-      require('babel-plugin-transform-es2015-classes'), // react-hot-loader always needs this, see: https://github.com/gaearon/react-hot-loader/issues/313
-      require('babel-plugin-syntax-dynamic-import'), // enable dynamic imports (lazy loading)
+      require('babel-plugin-transform-object-rest-spread'),
+      require('babel-plugin-transform-class-properties'),
+      require('babel-plugin-transform-es2015-classes'),
+      require('babel-plugin-syntax-dynamic-import'),
       require('babel-plugin-transform-runtime'),
-      ...(devMode ? [
-        require('react-hot-loader/babel')
-      ] : [
-        // require('babel-plugin-ramda'), // improve dead code elimination for ramda
-        require('babel-plugin-lodash'), // improve dead code elimination for lodash
+      require('babel-plugin-add-module-exports'),
+      ...(devMode ? [require('react-hot-loader/babel')] : [
+        require('babel-plugin-lodash'),
         [require('babel-plugin-transform-imports'), {
-          // improve dead code elimination for material-ui
           'material-ui': { transform: 'material-ui/${member}', preventFullImport: true }
         }]
       ])
@@ -56,7 +45,7 @@ const babelLoader = {
 
 const cssModuleLoader = {
   loader: 'css-loader',
-  query: {
+  options: {
     modules: true,
     localIdentName: '[name]__[local]___[hash:base64:5]'
   }
@@ -65,7 +54,7 @@ const cssModuleLoader = {
 const workerLoader = {
   loader: 'worker-loader',
   options: {
-    inline: false, // sepererate files will still be created as fallback
+    inline: false,
     name: '[name].worker.js'
   }
 };
@@ -75,34 +64,90 @@ const imgLoader = [{
   options: { name: '[path][name].[ext]' }
 }];
 
-if (!devMode) {
-  const imageCompressor = {
-    loader: 'image-webpack-loader',
-    options: {
-      mozjpeg: { progressive: true, quality: 65 },
-      optipng: { enabled: false },
-      pngquant: { quality: '65-90', speed: 4 }
-    }
-  };
-
-  //imgLoader.push(imageCompressor);
-}
-
 module.exports = {
   entry: {
     app: [
-      ...(devMode ? [
-        //'webpack-hot-middleware/client?reload=true', // hot middleware client
-        'react-hot-loader/patch'
-      ] : []),
+      ...(devMode ? ['react-hot-loader/patch'] : []),
       './src/js/preloader.js'
+    ]
+  },
+  output: {
+    filename: '[name].bundle.js',
+    chunkFilename: '[name].chunk.js',
+    path: path.resolve(__dirname, 'dist'),
+    publicPath: '/'
+  },
+  resolve: {
+    alias: {
+      'src': path.resolve(__dirname, 'src/'),
+      'data': path.resolve(__dirname, 'data/'),
+      'img': path.resolve(__dirname, 'img/'),
+      'workers': path.resolve(__dirname, 'workers/'),
+      'server': path.resolve(__dirname, 'server/'),
+      'CHANGELOG.md': path.resolve(__dirname, 'CHANGELOG.md')
+    }
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        include: [
+          path.resolve(__dirname, 'src'),
+          path.resolve(__dirname, 'node_modules/@doodle3d/doodle3d-core'),
+          path.resolve(__dirname, 'Doodle3D-Core-SG/lib'),
+	  path.resolve(__dirname, 'node_modules/@doodle3d/potrace-js'),
+          path.resolve(__dirname, 'node_modules/nanoid')
+        ],
+        use: [babelLoader]
+      },
+      {
+        test: /\.css$/,
+        exclude: /src\/css\/.+\.css$/,
+        use: ['style-loader', 'css-loader']
+      },
+      {
+        test: /src\/css\/.+\.css$/,
+        use: ['style-loader', cssModuleLoader]
+      },
+      {
+        test: /\.(png|jpeg|jpg|gif)$/,
+        use: imgLoader
+      },
+      {
+        test: /\.(woff)$/,
+        use: 'file-loader'
+      },
+      {
+        test: /\.(svg|glsl|txt|md)$/,
+        use: 'raw-loader'
+      },
+      {
+        test: /\.json$/,
+        use: 'json-loader'
+      },
+      {
+        test: /\.yml$/,
+        use: 'yml-loader'
+      },
+      {
+        test: /\.worker.js$/,
+        use: [workerLoader, babelLoader]
+      },
+      {
+        test: /three\/examples\/.+\.js/,
+        use: 'imports-loader?THREE=three'
+      },
+      {
+        test: /redux-undo\.umd\.js$/,
+        use: 'script-loader'
+      }
     ]
   },
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
         'NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-        'PLATFORM': JSON.stringify(process.env.PLATFORM),
+        'PLATFORM': JSON.stringify(process.env.PLATFORM)
       }
     }),
     ...(analyzeBundle ? [new BundleAnalyzerPlugin()] : [
@@ -128,7 +173,7 @@ module.exports = {
           { name: 'viewport', content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, minimal-ui, user-scalable=no' }
         ],
         headHtmlSnippet: '<link rel="shortcut icon" href="img/apple-touch-icon-144x144-precomposed.png" type="image/x-icon" />\
-          <link rel="apple-touch-icon" href="img/apple-touch-icon-144x144-precomposed.png">',
+          <link rel="apple-touch-icon" href="img/apple-touch-icon-144x144-precomposed.png">'
       }),
       new HTMLWebpackPlugin({
         template: require('html-webpack-template'),
@@ -143,75 +188,16 @@ module.exports = {
     ...(devMode ? [
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NamedModulesPlugin()
-      // new BundleAnalyzerPlugin()
     ] : [])
   ],
-  output: {
-    filename: '[name].bundle.js',
-    chunkFilename: '[name].chunk.js',
-    path: path.resolve(__dirname, 'dist'),
+  devServer: {
+    host: '0.0.0.0',
+    port: 8080,
+    contentBase: path.join(__dirname, 'dist'),
+    historyApiFallback: true,
+    hot: true,
+    allowedHosts: ['all'],
     publicPath: '/'
   },
-  resolve: {
-    alias: {
-      'src': path.resolve(__dirname, 'src/'),
-      'data': path.resolve(__dirname, 'data/'),
-      'img': path.resolve(__dirname, 'img/'),
-      'workers': path.resolve(__dirname, 'workers/'),
-      'server': path.resolve(__dirname, 'server/'),
-      'CHANGELOG.md': path.resolve(__dirname, 'CHANGELOG.md')
-    }
-  },
-  module: {
-    rules: [
-	{
-  		test: /Doodle3D-Core-SG\/lib\/.*\.js$/,
-  		use: [babelLoader]
-	},
-      	{
-        	test: /@doodle3d\/doodle3d-core\/lib\/.*\.js$/,
-        	use: [babelLoader]
-      	}, {
-        test: /\.css$/,
-        exclude: /src\/css\/.+\.css$/,
-        use: ['style-loader', 'css-loader']
-      }, { // css modules
-        test: /src\/css\/.+\.css$/,
-        use: ['style-loader', cssModuleLoader]
-      }, {
-        test: /\.(png|jpeg|jpg|gif)$/,
-        use: imgLoader
-      }, {
-        test: /\.(woff)$/,
-        use: {
-          loader: 'file-loader'
-        }
-      }, {
-        test: /\.(svg|glsl|txt|md)$/,
-        use: 'raw-loader'
-      }, {
-        test: /\.json$/,
-        use: 'json-loader'
-      }, {
-        test: /\.yml$/,
-        use: 'yml-loader'
-      }, { // web workers
-        test: /\.worker.js$/,
-        use: [workerLoader, babelLoader]
-      }, { // make THREE global available to three.js examples
-        	test: /three\/examples\/.+\.js/,
-        	use: 'imports-loader?THREE=three'
-      }, {
-  	test: /redux-undo\.umd\.js$/,
-  	use: 'script-loader'
-      },{
-  		test: /\.js$/,
-  		exclude: /node_modules\/(?!nanoid)/,
-  		use: [babelLoader]
-      }
-    ]
-  },
-  // Source map creation
-  // https://webpack.js.org/configuration/devtool/
-  devtool
+  devtool: devtool
 };
