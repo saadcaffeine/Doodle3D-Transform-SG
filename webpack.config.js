@@ -164,15 +164,18 @@ module.exports = {
   },
   module: {
     rules: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: [babelLoader]
-      }, {
+	{
+  		test: /Doodle3D-Core-SG\/lib\/.*\.js$/,
+  		use: [babelLoader]
+	},
+      	{
+        	test: /@doodle3d\/doodle3d-core\/lib\/.*\.js$/,
+        	use: [babelLoader]
+      	}, {
         test: /\.css$/,
         exclude: /src\/css\/.+\.css$/,
         use: ['style-loader', 'css-loader']
-        }, { // css modules
+      }, { // css modules
         test: /src\/css\/.+\.css$/,
         use: ['style-loader', cssModuleLoader]
       }, {
@@ -196,18 +199,16 @@ module.exports = {
         test: /\.worker.js$/,
         use: [workerLoader, babelLoader]
       }, { // make THREE global available to three.js examples
-        test: /three\/examples\/.+\.js/,
-        use: 'imports-loader?THREE=three'
+        	test: /three\/examples\/.+\.js/,
+        	use: 'imports-loader?THREE=three'
       }, {
   	test: /redux-undo\.umd\.js$/,
   	use: 'script-loader'
-	},
-	{
-  test: /\.js$/,
-  exclude: /node_modules\/(?!nanoid)/,
-  use: [babelLoader]
-}
-
+      },{
+  		test: /\.js$/,
+  		exclude: /node_modules\/(?!nanoid)/,
+  		use: [babelLoader]
+      }
     ]
   },
   // Source map creation

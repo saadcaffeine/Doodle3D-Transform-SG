@@ -36,31 +36,42 @@ This is a fork of [Doodle3D Transform](https://github.com/Doodle3D/Doodle3D-Tran
 - **Node.js 14.x** (recommended: `14.17.3`)
 - **npm 6.x or 7.x**
 - `nvm` (optional but recommended)
-
+- Babel 6
+- Webpack 3
+- CommonJS
 ---
 
 ## 🚀 Setup Instructions
 
-### 1. Clone the repo
 
-```bash
-git clone https://github.com/saadcaffeine/Doodle3D-Transform-SG.git
-cd Doodle3D-Transform-SG
-```
-
-### 2. Use Node.js 14
+### 1. Use Node.js 14
 
 ```bash
 nvm install 14
 nvm use 14
 ```
-
-### 3. Install dependencies
+### 2. Clone the repo
 
 ```bash
-rm -rf node_modules package-lock.json
-npm install
+git clone https://github.com/saadcaffeine/Doodle3D-Transform-SG.git
 ```
+
+## 🔐 Local Core            
+
+Transform-SG uses a local version of Core from Core-SG:
+
+```bash
+git clone https://github.com/saadcaffeine/Doodle3D-Core-SG.git ../Doodle3D-Core-SG
+cd ../Doodle3D-Core-SG
+npm install && npm run build
+npm link
+cd ../Doodle3D-Transform-SG
+npm link @doodle3d/doodle3d-core
+npm install
+
+```
+
+---
 
 > ℹ️ All dependencies are **version-locked**, including GitHub packages like `@doodle3d/doodle3d-slicer`, to ensure stable builds.
 
@@ -71,18 +82,6 @@ npm start
 ```
 
 Visit [http://localhost:8080](http://localhost:8080)
-
----
-
-## 🔐 GitHub Package Pinning
-
-These GitHub dependencies are pinned to specific commits for reproducibility:
-
-```json
-"@doodle3d/doodle3d-core": "Doodle3D/Doodle3D-Core#db748f7...",
-"@doodle3d/doodle3d-slicer": "Doodle3D/Doodle3D-Slicer#c0b4a07...",
-"redux-promise-action": "casperlamboo/redux-promise-action#b0dfad1..."
-```
 
 ---
 
@@ -98,7 +97,7 @@ Outputs are written to the `dist/` directory.
 
 ## ⚠️ Legacy Notes
 
-- This project uses **Webpack 3**, **React 16**, and **Redux 3/4**.
+- This project uses **Webpack 3**, **React 16**, Babel 6, and **Redux 3**.
 - It’s designed for older browsers and codebases.
 - **Do not upgrade Webpack or Babel without a rewrite.**
 
