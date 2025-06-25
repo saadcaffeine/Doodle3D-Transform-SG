@@ -89,7 +89,7 @@
     "three": "0.88.0",
     "webpack": "3.4.1",
     "webpack-bundle-analyzer": "2.8.3",
-    "webpack-dev-server": "2.5.1",
+    "webpack-dev-server": "^2.9.4",
     "webpack-hot-middleware": "2.18.2",
     "whatwg-fetch": "1.0.0",
     "worker-loader": "0.8.1",
