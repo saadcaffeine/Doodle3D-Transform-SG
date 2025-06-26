@@ -6,7 +6,7 @@
   "private": false,
   "scripts": {
     "postinstall": "npm run dist:prepare",
-    "start": "webpack-dev-server --host 0.0.0.0 --port 8080 --public 192.168.1.41:8080",
+    "start": "webpack-dev-server --host 0.0.0.0 --port 8080 --disable-host-check",
     "start-production": "NODE_ENV=production npm start",
     "lint": "eslint src/js",
     "dist:prepare": "npm run dist:licenses && mkdir -p dist && rimraf dist/*",
