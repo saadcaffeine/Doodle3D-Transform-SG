@@ -16,7 +16,7 @@
     "build": "npm run dist"
   },
   "dependencies": {
-    "@doodle3d/doodle3d-core": "git+ssh://git@github.com/saadcaffeine/Doodle3D-Core-SG.git",
+    "@doodle3d/doodle3d-core": "https://github.com/saadcaffeine/Doodle3D-Core-SG.git",
     "@doodle3d/doodle3d-slicer": "https://github.com/Doodle3D/Doodle3D-Slicer.git",
     "@doodle3d/redux-prompt": "1.0.2",
     "babel": "^6.23.0",
