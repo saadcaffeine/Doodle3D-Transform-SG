@@ -89,6 +89,9 @@ npm start
 
 Visit [http://localhost:8080](http://localhost:8080)
 
+Takes webpack-dev-server about 7-8 mins (on a RaspberryPi3b+) to build and start serving the app so be patient.
+Force Reload the page if the canvas fails to fully load
+
 ---
 
 ## Build for RaspberryPi
