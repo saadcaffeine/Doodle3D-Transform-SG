@@ -51,6 +51,7 @@ This is a fork of [Doodle3D Transform](https://github.com/Doodle3D/Doodle3D-Tran
 nvm install 14
 nvm use 14
 ```
+
 ### 2. Clone the repo
 
 ```bash
@@ -68,14 +69,17 @@ npm install && npm run build
 npm link
 cd ../Doodle3D-Transform-SG
 npm link @doodle3d/doodle3d-core
+```
 
 ### 3. Install Doodle-3D-Transform-SG
-npm install --legacy-peer-deps
-
-```
----
 
 > ℹ️ All dependencies are **version-locked**, including GitHub packages like `@doodle3d/doodle3d-slicer`, to ensure stable builds.
+
+```bash
+npm install --legacy-peer-deps
+```
+
+---
 
 ### 4. Start the development server
 
