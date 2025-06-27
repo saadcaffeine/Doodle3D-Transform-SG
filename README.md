@@ -24,7 +24,6 @@ npm run start
 * The GCODE slicer of Doodle3D Transform: https://github.com/doodle3d/Doodle3D-Slicer
 
 
-
 # 🎨 Doodle3D-Transform-SG
 
 This is a fork of [Doodle3D Transform](https://github.com/Doodle3D/Doodle3D-Transform) adapted for long-term reproducibility and compatibility with Node.js v14. It includes the full 3D sketch-to-print workflow built on WebGL, React, Redux, and Three.js.
@@ -35,14 +34,16 @@ This is a fork of [Doodle3D Transform](https://github.com/Doodle3D/Doodle3D-Tran
 
 - **Node.js 14.x** (recommended: `14.17.3`)
 - **npm 6.x or 7.x**
-- `nvm` (optional but recommended)
+- `nvm` (recommended)
+- React 16
 - Babel 6
 - Webpack 3
+- Core-JS 2
+- Redux 3
 - CommonJS
 ---
 
 ## 🚀 Setup Instructions
-
 
 ### 1. Use Node.js 14
 
@@ -67,10 +68,11 @@ npm install && npm run build
 npm link
 cd ../Doodle3D-Transform-SG
 npm link @doodle3d/doodle3d-core
-npm install
+
+### 3. Install Doodle-3D-Transform-SG
+npm install --legacy-peer-deps
 
 ```
-
 ---
 
 > ℹ️ All dependencies are **version-locked**, including GitHub packages like `@doodle3d/doodle3d-slicer`, to ensure stable builds.
@@ -85,15 +87,31 @@ Visit [http://localhost:8080](http://localhost:8080)
 
 ---
 
-## 🛠 Build for Production
+## Build for RaspberryPi
 
+Webpack requires these
 ```bash
-npm run dist
+sudo apt install -y build-essential automake autoconf libtool libpng-dev
+```
+You may need to install specific version of webpack-dev-server before installing Doodle-3D-Transform-SG
+```bash
+npm install webpack-dev-server@2.11.5 --legacy-peer-deps --ignore-scripts
 ```
 
-Outputs are written to the `dist/` directory.
+## running on RaspberryPi
 
----
+Increase inotify watcher lmits
+
+```bash
+echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf
+sudo sysctl -p
+```
+## TODO:
+- Doodle3D as a systemd doodle3d-app.service
+- img file for raspberryPi
+- kiosk mode version
+- deb package?
+--
 
 ## ⚠️ Legacy Notes
 
