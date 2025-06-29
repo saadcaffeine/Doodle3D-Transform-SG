@@ -45,6 +45,14 @@ This is a fork of [Doodle3D Transform](https://github.com/Doodle3D/Doodle3D-Tran
 
 ## 🚀 Setup Instructions
 
+### 0. Install NVM
+```bash
+# Download and install nvm:
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+# in lieu of restarting the shell
+\. "$HOME/.nvm/nvm.sh"
+```
+
 ### 1. Use Node.js 14
 
 ```bash
